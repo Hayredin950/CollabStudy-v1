@@ -1,136 +1,98 @@
 {% extends 'main.html' %}
 {% block content %}
-<!-- Logged In -->
-<!-- <a href="#">
-                          <div class="avatar avatar--medium active">
-                            <img src="https://randomuser.me/api/portraits/men/37.jpg" />
-                          </div>
-                          <p>John Doe <span>@john_doe</span></p>
-                          <svg
-                            version="1.1"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="32"
-                            height="32"
-                            viewBox="0 0 32 32"
-                          >
-                            <title>chevron-down</title>
-                            <path d="M16 21l-13-13h-3l16 16 16-16h-3l-13 13z"></path>
-                          </svg>
-                        </a> -->
-<main class="auth layout">
-    {% if page == 'login' %}
-    <div class="container">
-        <div class="layout__box">
-            <div class="layout__boxHeader">
-                <div class="layout__boxTitle">
-                    <h3>Login</h3>
+<main class="min-h-[80vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8 bg-custom-card border border-custom p-8 rounded-2xl shadow-2xl">
+        <div>
+            <div class="flex justify-center">
+                <div class="bg-sky-500 p-3 rounded-2xl shadow-lg shadow-sky-500/20">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
                 </div>
             </div>
-            <div class="layout__body">
-                <h2 class="auth__tagline">Find your study partner</h2>
-
-                <form class="form" action="" method="POST">
-                    {% csrf_token %}
-                    <div class="form__group form__group">
-                        <label for="room_name">Email</label>
-                        <input id="username" name="email" type="text" placeholder="e.g. dennis_ivy" />
-                    </div>
-                    <div class="form__group">
-                        <label for="password">Password</label>
-                        <input id="password" name="password" type="password"
-                            placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" />
-                    </div>
-
-                    <button class="btn btn--main" type="submit">
-                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
-                            viewBox="0 0 32 32">
-                            <title>lock</title>
-                            <path
-                                d="M27 12h-1v-2c0-5.514-4.486-10-10-10s-10 4.486-10 10v2h-1c-0.553 0-1 0.447-1 1v18c0 0.553 0.447 1 1 1h22c0.553 0 1-0.447 1-1v-18c0-0.553-0.447-1-1-1zM8 10c0-4.411 3.589-8 8-8s8 3.589 8 8v2h-16v-2zM26 30h-20v-16h20v16z">
-                            </path>
-                            <path
-                                d="M15 21.694v4.306h2v-4.306c0.587-0.348 1-0.961 1-1.694 0-1.105-0.895-2-2-2s-2 0.895-2 2c0 0.732 0.413 1.345 1 1.694z">
-                            </path>
-                        </svg>
-
-                        Login
-                    </button>
-                </form>
-
-                <div class="auth__action">
-                    <p>Haven't signed up yet?</p>
-                    <a href="{% url 'register' %}" class="btn btn--link">Sign Up</a>
-                </div>
-            </div>
+            <h2 class="mt-6 text-center text-3xl font-extrabold text-white tracking-tight">
+                {% if page == 'login' %}Sign in to your account{% else %}Create your account{% endif %}
+            </h2>
+            <p class="mt-2 text-center text-sm text-slate-400">
+                Join the world's most elite study network
+            </p>
         </div>
-    </div>
-    {% else %}
-    <div class="container">
-        <div class="layout__box">
-            <div class="layout__boxHeader">
-                <div class="layout__boxTitle">
-                    <h3>Login</h3>
-                </div>
-            </div>
-            <div class="layout__body">
-                <h2 class="auth__tagline">Find your study partner</h2>
 
-                <form class="form" action="" method="POST">
-                    {% csrf_token %}
-                    {% for field in form %}
-                    <div class="form__group form__group">
-                        <label for="room_name">{{field.label}}</label>
+        <form class="mt-8 space-y-6" action="" method="POST">
+            {% csrf_token %}
+            <div class="rounded-md shadow-sm space-y-4">
+                {% if page == 'login' %}
+                <div>
+                    <label for="email" class="block text-sm font-semibold text-slate-300 mb-1">Email Address</label>
+                    <input id="email" name="email" type="email" required 
+                           class="appearance-none relative block w-full px-4 py-3 border border-custom bg-custom-dark text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all placeholder-slate-500 sm:text-sm" 
+                           placeholder="you@example.com">
+                </div>
+                <div>
+                    <label for="password" class="block text-sm font-semibold text-slate-300 mb-1">Password</label>
+                    <input id="password" name="password" type="password" required 
+                           class="appearance-none relative block w-full px-4 py-3 border border-custom bg-custom-dark text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all placeholder-slate-500 sm:text-sm" 
+                           placeholder="••••••••">
+                </div>
+                {% else %}
+                {% for field in form %}
+                <div>
+                    <label class="block text-sm font-semibold text-slate-300 mb-1">{{field.label}}</label>
+                    <div class="auth-field-wrapper">
                         {{field}}
                     </div>
-                    {% endfor %}
-
-
-                    <button class="btn btn--main" type="submit">
-                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
-                            viewBox="0 0 32 32">
-                            <title>lock</title>
-                            <path
-                                d="M27 12h-1v-2c0-5.514-4.486-10-10-10s-10 4.486-10 10v2h-1c-0.553 0-1 0.447-1 1v18c0 0.553 0.447 1 1 1h22c0.553 0 1-0.447 1-1v-18c0-0.553-0.447-1-1-1zM8 10c0-4.411 3.589-8 8-8s8 3.589 8 8v2h-16v-2zM26 30h-20v-16h20v16z">
-                            </path>
-                            <path
-                                d="M15 21.694v4.306h2v-4.306c0.587-0.348 1-0.961 1-1.694 0-1.105-0.895-2-2-2s-2 0.895-2 2c0 0.732 0.413 1.345 1 1.694z">
-                            </path>
-                        </svg>
-
-                        Sign Up
-                    </button>
-                </form>
-
-                <div class="auth__action">
-                    <p>Already signed up ?</p>
-                    <a href="{% url 'login' %}" class="btn btn--link">Login</a>
+                    {% if field.errors %}
+                    <p class="text-rose-500 text-[10px] mt-1">{{field.errors.0}}</p>
+                    {% endif %}
                 </div>
+                {% endfor %}
+                {% endif %}
             </div>
+
+            <div>
+                <button type="submit" class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-xl text-white bg-sky-500 hover:bg-sky-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500 transition-all transform hover:scale-[1.02] active:scale-[0.98]">
+                    <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                        <svg class="h-5 w-5 text-sky-300 group-hover:text-sky-100 transition-colors" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+                        </svg>
+                    </span>
+                    {% if page == 'login' %}Sign In{% else %}Create Account{% endif %}
+                </button>
+            </div>
+        </form>
+
+        <div class="text-center">
+            <p class="text-sm text-slate-400">
+                {% if page == 'login' %}
+                New to CollabStudy? 
+                <a href="{% url 'register' %}" class="font-bold text-sky-400 hover:text-sky-300 transition-colors">Start for free</a>
+                {% else %}
+                Already have an account? 
+                <a href="{% url 'login' %}" class="font-bold text-sky-400 hover:text-sky-300 transition-colors">Sign in here</a>
+                {% endif %}
+            </p>
         </div>
     </div>
-
-    {% endif %}
 </main>
 
-
-
-<!-- Logged In -->
-<!-- <a href="#">
-                <div class="avatar avatar--medium active">
-                  <img src="https://randomuser.me/api/portraits/men/37.jpg" />
-                </div>
-                <p>John Doe <span>@john_doe</span></p>
-                <svg
-                  version="1.1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="32"
-                  height="32"
-                  viewBox="0 0 32 32"
-                >
-                  <title>chevron-down</title>
-                  <path d="M16 21l-13-13h-3l16 16 16-16h-3l-13 13z"></path>
-                </svg>
-              </a> -->
-
-
+<style>
+    .auth-field-wrapper input, .auth-field-wrapper select {
+        appearance: none;
+        position: relative;
+        display: block;
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid #334155;
+        background-color: #0F172A;
+        color: white;
+        border-radius: 0.75rem;
+        transition: all 0.2s;
+        font-size: 0.875rem;
+    }
+    .auth-field-wrapper input:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px #38BDF8;
+        border-color: transparent;
+    }
+</style>
 {% endblock content %}

@@ -1,37 +1,40 @@
 {% extends 'main.html' %}
 {% block content %}
-<main class="delete-item layout">
-    <div class="container">
-        <div class="layout__box">
-            <div class="layout__boxHeader">
-                <div class="layout__boxTitle">
-                    <a href="{{request.META.HTTP_REFERER}}">
-                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
-                            viewBox="0 0 32 32">
-                            <title>arrow-left</title>
-                            <path
-                                d="M13.723 2.286l-13.723 13.714 13.719 13.714 1.616-1.611-10.96-10.96h27.625v-2.286h-27.625l10.965-10.965-1.616-1.607z">
-                            </path>
-                        </svg>
-                    </a>
-                    <h3>Back</h3>
+<main class="py-20">
+    <div class="max-w-md mx-auto px-4">
+        <div class="bg-custom-card border border-custom rounded-3xl shadow-2xl overflow-hidden transform transition-all hover:scale-[1.01]">
+            <!-- Header -->
+            <div class="px-8 py-6 border-b border-custom bg-slate-800/30">
+                <div class="flex items-center space-x-3 text-rose-500 mb-2">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                    <h3 class="text-xl font-bold tracking-tight">Confirm Deletion</h3>
                 </div>
+                <p class="text-slate-400 text-sm">This action cannot be undone. Please be certain.</p>
             </div>
-            <div class="layout__body">
-                <form class="form" action="" method="POST">
+
+            <!-- Body -->
+            <div class="p-8">
+                <form class="space-y-8" action="" method="POST">
                     {% csrf_token %}
-                    <div class="form__group">
-                        <p>Are you sure you want to delete "{{obj}}"?</p>
+                    <div class="bg-custom-dark/50 border border-custom rounded-2xl p-6">
+                        <p class="text-slate-200 leading-relaxed">
+                            Are you sure you want to permanently delete <span class="text-white font-bold italic">"{{obj}}"</span>?
+                        </p>
                     </div>
 
-                    <div class="for__group">
-                        <input class="btn btn--main" type="submit" value="Confirm" />
+                    <div class="flex items-center space-x-4">
+                        <a href="{{request.META.HTTP_REFERER}}" class="flex-1 px-6 py-3 bg-slate-800 hover:bg-slate-700 text-slate-300 text-center font-bold rounded-xl transition-all border border-custom">
+                            Cancel
+                        </a>
+                        <button type="submit" class="flex-1 px-6 py-3 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-xl transition-all shadow-lg shadow-rose-600/20 transform hover:scale-105">
+                            Yes, Delete
+                        </button>
                     </div>
-
                 </form>
             </div>
         </div>
     </div>
 </main>
-
 {% endblock%}

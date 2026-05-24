@@ -1,38 +1,46 @@
-<div class="activities">
-    <div class="activities__header">
-        <h2>Recent Activities</h2>
+<div class="bg-custom-card border border-custom rounded-xl overflow-hidden shadow-lg">
+    <div class="bg-slate-800/50 px-5 py-4 border-b border-custom flex justify-between items-center">
+        <h3 class="text-sm font-bold text-white uppercase tracking-wider">Recent Activity</h3>
     </div>
-    {% for message in room_messages %}
-    <div class="activities__box">
-        <div class="activities__boxHeader roomListRoom__header">
-            <a href="{% url 'profile' message.user.id %}" class="roomListRoom__author">
-                <div class="avatar avatar--small">
-                    <img src="{{message.user.avatar.url}}" />
-                </div>
-                <p>
-                    @{{message.user.username}}
-                    <span>{{message.created|timesince}} ago</span>
-                </p>
-            </a>
-            {% if request.user == message.user %}
-            <div class="roomListRoom__actions">
-                <a href="{% url 'delete_message' message.id %}">
-                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-                        <title>remove</title>
-                        <path
-                            d="M27.314 6.019l-1.333-1.333-9.98 9.981-9.981-9.981-1.333 1.333 9.981 9.981-9.981 9.98 1.333 1.333 9.981-9.98 9.98 9.98 1.333-1.333-9.98-9.98 9.98-9.981z">
-                        </path>
+    
+    <div class="divide-y divide-custom">
+        {% for message in room_messages %}
+        <div class="p-4 hover:bg-slate-800/30 transition-colors group">
+            <div class="flex items-start justify-between mb-2">
+                <a href="{% url 'profile' message.user.id %}" class="flex items-center space-x-2 group/user">
+                    <img class="h-7 w-7 rounded-full object-cover border border-slate-700 group-hover/user:border-sky-500 transition-colors" src="{{message.user.avatar.url}}" alt="Avatar">
+                    <div>
+                        <p class="text-xs font-bold text-white leading-none">@{{message.user.username}}</p>
+                        <p class="text-[10px] text-slate-500 mt-0.5">{{message.created|timesince}} ago</p>
+                    </div>
+                </a>
+                
+                {% if request.user == message.user %}
+                <a href="{% url 'delete_message' message.id %}" class="text-slate-600 hover:text-rose-500 transition-colors opacity-0 group-hover:opacity-100">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </a>
+                {% endif %}
             </div>
-            {% endif %}
-        </div>
-        <div class="activities__boxContent">
-            <p>replied to post “<a href="{% url 'room' message.room.id %}">{{message.room}}</a>”</p>
-            <div class="activities__boxRoomContent">
-                {{message}}
+            
+            <div class="pl-9">
+                <p class="text-[11px] text-slate-500 mb-1">
+                    Replied to <a href="{% url 'room' message.room.id %}" class="text-sky-400 hover:underline font-semibold">"{{message.room.name}}"</a>
+                </p>
+                <div class="bg-custom-dark/50 border border-custom p-2 rounded-lg text-xs text-slate-300 italic leading-relaxed">
+                    "{{message.body|truncatechars:100}}"
+                </div>
             </div>
         </div>
+        {% empty %}
+        <div class="p-8 text-center">
+            <p class="text-slate-500 text-xs italic">No recent activity to show.</p>
+        </div>
+        {% endfor %}
     </div>
-    {% endfor %}
+    
+    <div class="bg-slate-800/20 px-5 py-3 text-center border-t border-custom">
+        <a href="{% url 'activity' %}" class="text-[10px] font-bold text-slate-400 hover:text-white uppercase tracking-widest transition-colors">View Full Stream</a>
+    </div>
 </div>

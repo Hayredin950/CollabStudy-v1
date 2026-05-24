@@ -1,148 +1,127 @@
 {% extends 'main.html' %}
 {% block content %}
-<!-- Not Logged In -->
-<!-- <a href="/login.html">
-                  <img src="./assets/avatar.svg" />
-                  <p>Account</p>
-                </a> -->
-
-<!-- Logged In -->
-<main class="profile-page layout layout--2">
-    <div class="container">
-        <!-- Room Start -->
-        <div class="room">
-            <div class="room__top">
-                <div class="room__topLeft">
-                    <a href="{% url 'home' %}">
-                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
-                            viewBox="0 0 32 32">
-                            <title>arrow-left</title>
-                            <path
-                                d="M13.723 2.286l-13.723 13.714 13.719 13.714 1.616-1.611-10.96-10.96h27.625v-2.286h-27.625l10.965-10.965-1.616-1.607z">
-                            </path>
-                        </svg>
-                    </a>
-                    <h3>Study Room</h3>
-                </div>
-
-                <div class="room__topRight">
-                    <a href="{% url 'update_room' room.id %}">
-                        <svg enable-background="new 0 0 24 24" height="32" viewBox="0 0 24 24" width="32"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <title>edit</title>
-                            <g>
-                                <path
-                                    d="m23.5 22h-15c-.276 0-.5-.224-.5-.5s.224-.5.5-.5h15c.276 0 .5.224.5.5s-.224.5-.5.5z" />
-                            </g>
-                            <g>
-                                <g>
-                                    <path
-                                        d="m2.5 22c-.131 0-.259-.052-.354-.146-.123-.123-.173-.3-.133-.468l1.09-4.625c.021-.09.067-.173.133-.239l14.143-14.143c.565-.566 1.554-.566 2.121 0l2.121 2.121c.283.283.439.66.439 1.061s-.156.778-.439 1.061l-14.142 14.141c-.065.066-.148.112-.239.133l-4.625 1.09c-.038.01-.077.014-.115.014zm1.544-4.873-.872 3.7 3.7-.872 14.042-14.041c.095-.095.146-.22.146-.354 0-.133-.052-.259-.146-.354l-2.121-2.121c-.19-.189-.518-.189-.707 0zm3.081 3.283h.01z" />
-                                </g>
-                                <g>
-                                    <path
-                                        d="m17.889 10.146c-.128 0-.256-.049-.354-.146l-3.535-3.536c-.195-.195-.195-.512 0-.707s.512-.195.707 0l3.536 3.536c.195.195.195.512 0 .707-.098.098-.226.146-.354.146z" />
-                                </g>
-                            </g>
-                        </svg>
-                    </a>
-                    <a href="{% url 'delete_room' room.id %}">
-                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
-                            viewBox="0 0 32 32">
-                            <title>remove</title>
-                            <path
-                                d="M27.314 6.019l-1.333-1.333-9.98 9.981-9.981-9.981-1.333 1.333 9.981 9.981-9.981 9.98 1.333 1.333 9.981-9.98 9.98 9.98 1.333-1.333-9.98-9.98 9.98-9.981z">
-                            </path>
-                        </svg>
-                    </a>
-                </div>
-
-            </div>
-            <div class="room__box scroll">
-                <div class="room__header scroll">
-                    <div class="room__info">
-                        <h3>{{room.name}}</h3>
-                        <span>{{room.created|timesince}} ago</span>
-                    </div>
-                    <div class="room__hosted">
-                        <p>Hosted By</p>
-                        <a href="{% url 'profile' room.host.id %}" class="room__author">
-                            <div class="avatar avatar--small">
-                                <img src="{{room.host.avatar.url}}" />
+<main class="py-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- Chat Area -->
+        <section class="lg:col-span-9 space-y-6">
+            <div class="bg-custom-card border border-custom rounded-2xl overflow-hidden shadow-2xl flex flex-col h-[85vh]">
+                
+                <!-- Room Header -->
+                <div class="bg-slate-800/80 backdrop-blur-md px-6 py-4 border-b border-custom flex items-center justify-between sticky top-0 z-10">
+                    <div class="flex items-center space-x-4">
+                        <a href="{% url 'home' %}" class="text-slate-400 hover:text-white transition-colors">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                            </svg>
+                        </a>
+                        <div>
+                            <h2 class="text-xl font-bold text-white leading-tight">{{room.name}}</h2>
+                            <div class="flex items-center space-x-2 mt-1">
+                                <span class="bg-sky-500/10 text-sky-400 text-[10px] font-bold px-2 py-0.5 rounded border border-sky-500/20 uppercase tracking-widest">
+                                    {{room.topic.name}}
+                                </span>
+                                <span class="text-[10px] text-slate-500 font-medium uppercase tracking-widest">
+                                    Started {{room.created|timesince}} ago
+                                </span>
                             </div>
-                            <span>@{{room.host.username}}</span>
+                        </div>
+                    </div>
+
+                    {% if request.user == room.host %}
+                    <div class="flex items-center space-x-2">
+                        <a href="{% url 'update_room' room.id %}" class="p-2 text-slate-400 hover:text-sky-400 hover:bg-sky-500/10 rounded-lg transition-all" title="Edit Room">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
+                        </a>
+                        <a href="{% url 'delete_room' room.id %}" class="p-2 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition-all" title="Delete Room">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
                         </a>
                     </div>
-                    <div class="room__details">
-                        {{room.description}}
-                    </div>
-                    <span class="room__topics">{{room.topic.name}}</span>
+                    {% endif %}
                 </div>
-                <div class="room__conversation">
-                    <div class="threads scroll">
-                        {% for message in room_messages %}
-                        <div class="thread">
-                            <div class="thread__top">
-                                <div class="thread__author">
-                                    <a href="{% url 'profile' message.user.id %}" class="thread__authorInfo">
-                                        <div class="avatar avatar--small">
-                                            <img src="{{message.user.avatar.url}}" />
-                                        </div>
-                                        <span>@{{message.user}}</span>
-                                    </a>
-                                    <span class="thread__date">{{message.created|timesince}} ago</span>
-                                </div>
-                                {% if request.user == message.user %}
 
-                                <div class="thread__delete">
-                                    <a href="{% url 'delete_message' message.id %}">
-                                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
-                                            viewBox="0 0 32 32">
-                                            <title>remove</title>
-                                            <path
-                                                d="M27.314 6.019l-1.333-1.333-9.98 9.981-9.981-9.981-1.333 1.333 9.981 9.981-9.981 9.98 1.333 1.333 9.981-9.98 9.98 9.98 1.333-1.333-9.98-9.98 9.98-9.981z">
-                                            </path>
-                                        </svg>
-                                    </a>
-                                </div>
+                <!-- Messages Thread -->
+                <div class="flex-1 overflow-y-auto p-6 space-y-6 bg-custom-dark/20 custom-scrollbar" id="message-thread">
+                    {% for message in room_messages %}
+                    <div class="flex items-start space-x-4 {% if request.user == message.user %}flex-row-reverse space-x-reverse{% endif %} group">
+                        <a href="{% url 'profile' message.user.id %}" class="flex-shrink-0">
+                            <img class="h-10 w-10 rounded-xl object-cover border border-slate-700 shadow-lg" src="{{message.user.avatar.url}}" alt="Avatar">
+                        </a>
+                        <div class="max-w-[80%]">
+                            <div class="flex items-center space-x-2 mb-1 {% if request.user == message.user %}justify-end{% endif %}">
+                                <span class="text-xs font-bold text-slate-400">@{{message.user.username}}</span>
+                                <span class="text-[10px] text-slate-600">{{message.created|timesince}} ago</span>
+                                {% if request.user == message.user %}
+                                <a href="{% url 'delete_message' message.id %}" class="opacity-0 group-hover:opacity-100 text-slate-600 hover:text-rose-500 transition-all">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                </a>
                                 {% endif %}
                             </div>
-                            <div class="thread__details">
+                            <div class="{% if request.user == message.user %}bg-sky-600 text-white rounded-l-2xl rounded-br-2xl shadow-sky-900/20{% else %}bg-slate-800 text-slate-200 rounded-r-2xl rounded-bl-2xl{% endif %} p-4 shadow-xl text-sm leading-relaxed border border-white/5">
                                 {{message.body}}
                             </div>
                         </div>
-                        {% endfor %}
-
                     </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Input Area -->
+                <div class="p-6 bg-slate-800/50 border-t border-custom">
+                    <form action="" method="POST" class="relative">
+                        {% csrf_token %}
+                        <input type="text" name="body" placeholder="Message #{{room.name}}..." 
+                               class="bg-custom-dark border border-custom text-slate-200 text-sm rounded-xl block w-full pl-5 pr-12 py-4 outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all shadow-inner">
+                        <button type="submit" class="absolute right-3 top-1/2 -translate-y-1/2 bg-sky-500 hover:bg-sky-400 text-white p-2 rounded-lg transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                            </svg>
+                        </button>
+                    </form>
                 </div>
             </div>
-            <div class="room__message">
-                <form action="" method="POST">
-                    {% csrf_token %}
-                    <input name="body" placeholder="Write your message here..." />
-                </form>
-            </div>
-        </div>
-        <!-- Room End -->
+        </section>
 
-        <!--   Start -->
-        <div class="participants">
-            <h3 class="participants__top">Participants <span>{{room.participants.all.count}}</span></h3>
-            <div class="participants__list scroll">
-                {% for participant in participants %}
-                <a href="{% url 'profile' participant.id %}" class="participant">
-                    <div class="avatar avatar--medium">
-                        <img src="{{participant.avatar.url}}" />
+        <!-- Participants Sidebar -->
+        <aside class="hidden lg:block lg:col-span-3">
+            <div class="bg-custom-card border border-custom rounded-2xl overflow-hidden shadow-2xl sticky top-24">
+                <div class="bg-slate-800/50 px-5 py-4 border-b border-custom">
+                    <h3 class="text-sm font-bold text-white uppercase tracking-wider flex items-center">
+                        <svg class="w-4 h-4 mr-2 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                        Participants ({{room.participants.all.count}})
+                    </h3>
+                </div>
+                <div class="p-4 max-h-[60vh] overflow-y-auto custom-scrollbar">
+                    <div class="space-y-4">
+                        {% for participant in participants %}
+                        <a href="{% url 'profile' participant.id %}" class="flex items-center space-x-3 group/part p-2 hover:bg-slate-800 rounded-xl transition-colors">
+                            <img class="h-8 w-8 rounded-lg object-cover border border-slate-700" src="{{participant.avatar.url}}" alt="Avatar">
+                            <div>
+                                <p class="text-xs font-bold text-white group-hover/part:text-sky-400 transition-colors">@{{participant.username}}</p>
+                                <p class="text-[10px] text-slate-500 font-medium truncate w-32">{{participant.email}}</p>
+                            </div>
+                        </a>
+                        {% endfor %}
                     </div>
-                    <p>
-                        {{participant.username}}
-                        <span>{{participant.email}}</span>
-                    </p>
-                </a>
-                {% endfor %}
+                </div>
+                <div class="bg-slate-800/20 p-4 border-t border-custom">
+                    <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest text-center">Collaboration Engine v2.0</p>
+                </div>
             </div>
-        </div>
-        <!--  End -->
+        </aside>
     </div>
 </main>
-{% endblock content %}
+
+<script>
+    // Scroll to bottom of message thread on load
+    const thread = document.getElementById('message-thread');
+    thread.scrollTop = thread.scrollHeight;
+</script>
+{% endblock %}

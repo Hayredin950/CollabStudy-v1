@@ -1,57 +1,76 @@
 {% extends 'main.html' %}
 {% block content %}
-<!-- Not Logged In -->
-<!-- <a href="/login.html">
-                <img src="./assets/avatar.svg" />
-                <p>Account</p>
-              </a> -->
+<main class="py-12">
+    <div class="max-w-4xl mx-auto px-4">
+        <div class="bg-custom-card border border-custom rounded-3xl shadow-2xl overflow-hidden">
+            <!-- Header -->
+            <div class="px-8 py-8 border-b border-custom bg-slate-800/30">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                    <div class="flex items-center space-x-4">
+                        <a href="{{request.META.HTTP_REFERER}}" class="p-2 bg-custom-dark border border-custom rounded-lg text-slate-400 hover:text-white hover:border-sky-500 transition-all group">
+                            <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                            </svg>
+                        </a>
+                        <div>
+                            <h3 class="text-2xl font-bold text-white tracking-tight">Browse Topics</h3>
+                            <p class="text-slate-400 text-sm mt-1">Explore rooms by subject</p>
+                        </div>
+                    </div>
+                    
+                    <form class="relative w-full md:w-72" method="GET" action="">
+                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
+                            <svg class="h-5 w-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </span>
+                        <input type="text" name="q" placeholder="Search topics..." 
+                               class="w-full bg-custom-dark border border-custom text-slate-200 text-sm rounded-xl pl-10 p-3 outline-none focus:ring-2 focus:ring-sky-500 transition-all">
+                    </form>
+                </div>
+            </div>
 
-<!-- Logged In -->
-<main class="create-room layout">
-  <div class="container">
-    <div class="layout__box">
-      <div class="layout__boxHeader">
-        <div class="layout__boxTitle">
-          <a href="{{request.META.HTTP_REFERER}}">
-            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-              <title>arrow-left</title>
-              <path
-                d="M13.723 2.286l-13.723 13.714 13.719 13.714 1.616-1.611-10.96-10.96h27.625v-2.286h-27.625l10.965-10.965-1.616-1.607z">
-              </path>
-            </svg>
-          </a>
-          <h3>Browse Topics</h3>
+            <!-- Body -->
+            <div class="p-8">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    <a href="/" class="group flex items-center justify-between p-4 rounded-2xl bg-custom-dark border border-custom hover:border-sky-500 hover:bg-slate-800/50 transition-all">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-xl bg-sky-500/10 flex items-center justify-center text-sky-500 border border-sky-500/20 group-hover:scale-110 transition-transform">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                                </svg>
+                            </div>
+                            <span class="font-bold text-white">All Topics</span>
+                        </div>
+                        <span class="bg-slate-800 text-slate-400 text-xs font-bold px-3 py-1 rounded-full border border-custom">{{topics.count}}</span>
+                    </a>
+
+                    {% for topic in topics %}
+                    <a href="{% url 'home'%}?q={{topic.name}}" class="group flex items-center justify-between p-4 rounded-2xl bg-custom-dark border border-custom hover:border-sky-500 hover:bg-slate-800/50 transition-all">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-slate-400 group-hover:text-sky-400 border border-custom group-hover:border-sky-500/30 group-hover:scale-110 transition-transform">
+                                <span class="text-xs font-bold">{{topic.name|slice:":2"|upper}}</span>
+                            </div>
+                            <span class="font-bold text-slate-300 group-hover:text-white transition-colors truncate max-w-[120px]">{{topic.name}}</span>
+                        </div>
+                        <span class="bg-slate-800 text-slate-500 group-hover:text-sky-400 text-xs font-bold px-3 py-1 rounded-full border border-custom transition-colors">{{topic.room_set.all.count}}</span>
+                    </a>
+                    {% endfor %}
+                </div>
+                
+                {% if not topics %}
+                <div class="text-center py-20">
+                    <div class="w-20 h-20 bg-slate-800 rounded-3xl flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-10 h-10 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 9.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <h4 class="text-xl font-bold text-white">No topics found</h4>
+                    <p class="text-slate-500 mt-2">Try searching for something else or browse all topics.</p>
+                </div>
+                {% endif %}
+            </div>
         </div>
-      </div>
-
-      <div class="topics-page layout__body">
-        <form class="header__search" method="GET" action="">
-          {% csrf_token %}
-          <label>
-            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-              <title>search</title>
-              <path
-                d="M32 30.586l-10.845-10.845c1.771-2.092 2.845-4.791 2.845-7.741 0-6.617-5.383-12-12-12s-12 5.383-12 12c0 6.617 5.383 12 12 12 2.949 0 5.649-1.074 7.741-2.845l10.845 10.845 1.414-1.414zM12 22c-5.514 0-10-4.486-10-10s4.486-10 10-10c5.514 0 10 4.486 10 10s-4.486 10-10 10z">
-              </path>
-            </svg>
-            <input name="q" placeholder="Search for posts" />
-          </label>
-        </form>
-
-        <ul class="topics__list">
-          <li>
-            <a href="/" class="active">All <span>{{topics.count}}</span></a>
-          </li>
-          {% for topic in topics %}
-          <li>
-            <a href="{% url 'home'%}?q={{topic.name}}">{{topic.name}} <span>{{topic.room_set.all.count}}</span></a>
-          </li>
-          {% endfor %}
-
-        </ul>
-      </div>
     </div>
-  </div>
 </main>
-
 {% endblock content %}

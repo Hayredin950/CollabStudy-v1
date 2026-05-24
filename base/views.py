@@ -59,10 +59,10 @@ def home(request):
                               Q(description__icontains=q)|
                               Q(host__username__icontains=q))
     
-    room_messages=Message.objects.filter(Q(room__topic__name__icontains=q)).order_by('-created')[:3]
+    room_messages=Message.objects.filter(Q(room__topic__name__icontains=q)).order_by('-created')[:6]
 
     room_count=rooms.count()
-    topics=Topic.objects.all()[0:5]
+    topics=Topic.objects.all()[0:10]
     context={'rooms':rooms,
              'topics':topics,
               'room_count':room_count,"room_messages":room_messages}
@@ -78,7 +78,7 @@ def profile(request, pk):
     return render(request, 'profile.html', context)
 def room(request,pk):
     room=Room.objects.get(id=pk)
-    room_messages=room.message_set.all().order_by('-created')
+    room_messages=room.message_set.all().order_by('created')
     participants=room.participants.all()
     
     if request.user.is_authenticated:
@@ -167,6 +167,6 @@ def topicsPage(request):
     return render(request, 'topics.html',context)
 
 def activityPage(request):
-    room_messages=Message.objects.all()
+    room_messages=Message.objects.all().order_by('-created')
     context={'room_messages':room_messages}
     return render(request, 'activity.html',context)

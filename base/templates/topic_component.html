@@ -1,23 +1,31 @@
-<div class="topics">
-    <div class="topics__header">
-        <h2>Browse Topics</h2>
+<div class="bg-custom-card border border-custom rounded-xl overflow-hidden shadow-lg">
+    <div class="bg-slate-800/50 px-5 py-4 border-b border-custom">
+        <h3 class="text-sm font-bold text-white uppercase tracking-wider">Browse Topics</h3>
     </div>
-    <ul class="topics__list">
-        <li>
-            <a href="/" class="active">All <span>{{topics.count}}</span></a>
-        </li>
-        {% for topic in topics %}
-        <li>
-            <a href="{% url 'home'%}?q={{topic.name}}">{{topic.name}} <span>{{topic.room_set.all.count}}</span></a>
-        </li>
-        {% endfor %}
-
-    </ul>
-    <a class="btn btn--link" href="{% url 'topics' %}">
-        More
-        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-            <title>chevron-down</title>
-            <path d="M16 21l-13-13h-3l16 16 16-16h-3l-13 13z"></path>
-        </svg>
-    </a>
+    <div class="p-2">
+        <ul class="space-y-1">
+            <li>
+                <a href="/" class="flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors {% if not request.GET.q %}bg-sky-500 text-white shadow-lg shadow-sky-500/20{% else %}text-slate-400 hover:bg-slate-800 hover:text-white{% endif %}">
+                    <span>All Topics</span>
+                    <span class="{% if not request.GET.q %}text-sky-100{% else %}text-slate-500{% endif %} text-xs font-bold">{{topics.count}}</span>
+                </a>
+            </li>
+            {% for topic in topics %}
+            <li>
+                <a href="{% url 'home' %}?q={{topic.name}}" class="flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors {% if request.GET.q == topic.name %}bg-sky-500 text-white shadow-lg shadow-sky-500/20{% else %}text-slate-400 hover:bg-slate-800 hover:text-white{% endif %}">
+                    <span class="truncate">{{topic.name}}</span>
+                    <span class="{% if request.GET.q == topic.name %}text-sky-100{% else %}text-slate-500{% endif %} text-xs font-bold">{{topic.room_set.all.count}}</span>
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+        <div class="mt-4 px-3 pb-2">
+            <a href="{% url 'topics' %}" class="inline-flex items-center text-xs font-bold text-sky-400 hover:text-sky-300 transition-colors group">
+                View More Topics
+                <svg class="w-4 h-4 ml-1 group-hover:translate-y-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+            </a>
+        </div>
+    </div>
 </div>
