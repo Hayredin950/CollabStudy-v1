@@ -13,6 +13,7 @@
                 </a>
 
                 <div class="hidden md:block">
+                    {% if request.resolver_match.url_name == 'home' %}
                     <form action="{% url 'home' %}" method="GET" class="relative">
                         <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
                             <svg class="h-5 w-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -22,6 +23,7 @@
                         <input type="text" name="q" placeholder="Search rooms..." 
                                class="bg-custom-dark border border-custom text-slate-200 text-sm rounded-full focus:ring-sky-500 focus:border-sky-500 block w-64 pl-10 p-2 transition-all outline-none">
                     </form>
+                    {% endif %}
                 </div>
             </div>
 

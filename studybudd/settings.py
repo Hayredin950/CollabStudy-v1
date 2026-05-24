@@ -106,3 +106,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS
 CORS_ALLOW_ALL_ORIGINS = True
+
+# ✅ CSRF Trusted Origins for Render
+CSRF_TRUSTED_ORIGINS = [
+    'https://collabstudy750.onrender.com',
+    'https://*.onrender.com',
+]
