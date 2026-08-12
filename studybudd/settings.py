@@ -41,6 +41,9 @@ SECRET_KEY = os.environ.get(
     'django-insecure-8f1a4m2y-local-dev-only-key-do-not-use-in-production',
 )
 
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = env_bool('DEBUG', True)
+
 # Never run in production without a real secret key: fail fast instead of
 # silently serving traffic with a publicly-known key.
 if not DEBUG and os.environ.get('SECRET_KEY') is None:
@@ -49,9 +52,6 @@ if not DEBUG and os.environ.get('SECRET_KEY') is None:
         '`python -c "from django.core.management.utils import '
         'get_random_secret_key; print(get_random_secret_key())"`'
     )
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env_bool('DEBUG', True)
 
 ALLOWED_HOSTS = env_list('ALLOWED_HOSTS', 'localhost,127.0.0.1')
 
