@@ -7,6 +7,8 @@ dj-database-url==2.3.0
 gunicorn==23.0.0
 packaging==25.0
 pillow==11.3.0
+# Required by django-allauth for decoding Google's id_token (lazy-imported;
+# allauth does NOT declare it as a dependency — do not remove or Google login 500s).
 PyJWT==2.13.0
 psycopg[binary]==3.3.4
 python-dotenv==1.1.1
