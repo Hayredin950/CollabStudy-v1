@@ -18,10 +18,15 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include, re_path
+from django.views.generic import RedirectView
 from django.views.static import serve as serve_media
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # Social-only auth: allauth's default email/password pages are dead weight
+    # (we removed password auth), so send them to our social login page.
+    path('accounts/login/', RedirectView.as_view(pattern_name='login', permanent=False)),
+    path('accounts/signup/', RedirectView.as_view(pattern_name='register', permanent=False)),
     path('accounts/', include('allauth.urls')),  # Google & GitHub OAuth callbacks
     path('', include('base.urls')),
     path('api/', include('base.api.urls')),
