@@ -87,9 +87,10 @@ service **and** a managed PostgreSQL database automatically:
 
 1. Push this repo to GitHub.
 2. Go to **Render Dashboard → New → Blueprint** and connect the repository.
-3. Render creates the `collabstudy` web service + `collabstudy-db` Postgres, runs
-   migrations/collectstatic, and sets `SECRET_KEY`, `DEBUG=false` and the
-   `DATABASE_URL` for you.
+3. Render creates the `collabstudy` web service + `collabstudy-db` Postgres and
+   sets `SECRET_KEY`, `DEBUG=false` and the `DATABASE_URL` for you. Static files
+   are collected during the build; database migrations run automatically at
+   startup (free tier doesn't support pre-deploy commands).
 
 Required environment variables (all set by the blueprint, but needed if you
 create the service manually):

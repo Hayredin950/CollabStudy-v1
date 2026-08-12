@@ -1,7 +1,10 @@
 # Render Blueprint — deploy CollabStudy v1 (Django + PostgreSQL)
 # Connect this repo on https://dashboard.render.com/blueprints and Render
 # will create the web service and database defined here automatically.
-
+#
+# Free-tier notes:
+# - preDeployCommand is NOT supported on free services, so migrations run at
+#   startup via render.sh (idempotent) and collectstatic runs during build.
 databases:
   - name: collabstudy-db
     databaseName: collabstudy
@@ -14,9 +17,8 @@ services:
     runtime: python
     plan: free
     autoDeploy: true
-    buildCommand: pip install -r requirements.txt
-    preDeployCommand: python manage.py migrate --noinput && python manage.py collectstatic --noinput
-    startCommand: gunicorn studybudd.wsgi:application --workers 2 --worker-class gthread --threads 4 --timeout 120 --bind 0.0.0.0:$PORT
+    buildCommand: pip install -r requirements.txt && python manage.py collectstatic --noinput
+    startCommand: bash render.sh
     healthCheckPath: /
     envVars:
       - key: DEBUG
