@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.db.models import Q
 from django.contrib import messages
 from .models import Room,Topic,Message,User
@@ -70,14 +70,14 @@ def home(request):
     return render(request, 'home.html',context)
 
 def profile(request, pk):
-    user=User.objects.get(id=pk)
+    user=get_object_or_404(User, id=pk)
     room_messages=user.message_set.all()
     rooms=user.room_set.all()
     topics=Topic.objects.all()
     context={'user':user,'rooms':rooms,'topics':topics, "room_messages":room_messages}
     return render(request, 'profile.html', context)
 def room(request,pk):
-    room=Room.objects.get(id=pk)
+    room=get_object_or_404(Room, id=pk)
     room_messages=room.message_set.all().order_by('created')
     participants=room.participants.all()
     
