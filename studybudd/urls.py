@@ -22,6 +22,7 @@ from django.views.static import serve as serve_media
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('accounts/', include('allauth.urls')),  # Google & GitHub OAuth callbacks
     path('', include('base.urls')),
     path('api/', include('base.api.urls')),
 ]

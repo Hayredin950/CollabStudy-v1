@@ -1,5 +1,6 @@
 asgiref==3.8.1
 Django==5.2.3
+django-allauth==65.19.0
 django-cors-headers==4.7.0
 djangorestframework==3.16.0
 dj-database-url==2.3.0
@@ -8,6 +9,7 @@ packaging==25.0
 pillow==11.3.0
 psycopg[binary]==3.3.4
 python-dotenv==1.1.1
+requests==2.32.4
 sqlparse==0.5.3
 tzdata==2025.2
 whitenoise==6.9.0

@@ -63,10 +63,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'base.apps.BaseConfig',
     'rest_framework',
     'corsheaders',
+    # Authentication (Google & GitHub social login)
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.github',
 ]
+
+SITE_ID = 1
 
 AUTH_USER_MODEL = 'base.User'
 
@@ -78,6 +87,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -101,6 +111,51 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'studybudd.wsgi.application'
+
+# Authentication backends (Django + allauth social login)
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
+
+# Domain used by django.contrib.sites (set to your production domain)
+SITE_DOMAIN = os.environ.get('SITE_DOMAIN', 'collabstudy-rwqj.onrender.com')
+
+# --- Social-only authentication (Google & GitHub, no passwords) ---
+ACCOUNT_LOGIN_METHODS = {'email'}
+ACCOUNT_SIGNUP_FIELDS = ['email*']  # email is the only signup field; usernames are auto-generated
+ACCOUNT_EMAIL_VERIFICATION = 'none'  # emails come pre-verified from the providers
+ACCOUNT_UNIQUE_EMAIL = True
+
+SOCIALACCOUNT_AUTO_SIGNUP = True
+SOCIALACCOUNT_EMAIL_VERIFICATION = 'none'
+SOCIALACCOUNT_ADAPTER = 'base.adapters.CollabStudySocialAccountAdapter'
+
+# Provider credentials come from environment variables (Render dashboard),
+# never from the repository.
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': os.environ.get('GOOGLE_CLIENT_ID', ''),
+            'secret': os.environ.get('GOOGLE_CLIENT_SECRET', ''),
+            'key': '',
+        },
+        'SCOPE': ['profile', 'email'],
+        'AUTH_PARAMS': {'access_type': 'online'},
+    },
+    'github': {
+        'APP': {
+            'client_id': os.environ.get('GITHUB_CLIENT_ID', ''),
+            'secret': os.environ.get('GITHUB_CLIENT_SECRET', ''),
+            'key': '',
+        },
+        'SCOPE': ['user:email'],
+    },
+}
 
 # Database
 # Production uses PostgreSQL via the DATABASE_URL provided by Render.

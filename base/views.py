@@ -3,8 +3,8 @@ from django.shortcuts import render,redirect,get_object_or_404
 from django.db.models import Q
 from django.contrib import messages
 from .models import Room,Topic,Message,User
-from .form import RoomForm, UserForm,MyUserCreationForm
-from django.contrib.auth import authenticate,login,logout
+from .form import RoomForm, UserForm
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 
 
@@ -12,44 +12,17 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
  
 
-def loginPage(request):
-    page='login'
-    if request.method=='POST':
-        email=request.POST.get('email').lower()
-        password=request.POST.get('password')
-        
-        try:
-            user=User.objects.get(email=email)
-        except:
-            messages.error(request, "username  not exist")
-        
-        user=authenticate(request, email=email, password=password)
-        
-        if user is not None:
-            login(request, user)
-            return redirect('home')
-        else:
-            messages.error(request, "username or password does not exist")
-        
-    context={"page":page}
-    return render(request, 'login_register.html',context)
+def authPage(request):
+    """Landing page with the Google/GitHub social login buttons.
+
+    Authentication itself is handled by django-allauth at /accounts/...
+    (the first sign-in automatically creates the account).
+    """
+    return render(request, 'login_register.html')
+
 def logoutUser(request):
     logout(request)
     return redirect('home')
-def registerPage(request):
-    form=MyUserCreationForm()
-    if request.method=='POST':
-        form=MyUserCreationForm(request.POST)
-        if form.is_valid():
-            user=form.save(commit=False)
-            user.username=user.username.lower()
-            user.save()
-            login(request, user)
-            return redirect('home')
-        else:
-            messages.error(request, "An error occurred during registration")
-    context={"form":form}
-    return render(request, 'login_register.html',context)
 
 def home(request):
     
