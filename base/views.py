@@ -1,10 +1,8 @@
 from django.http import HttpResponse
 from django.shortcuts import render,redirect,get_object_or_404
 from django.db.models import Q
-from django.contrib import messages
 from .models import Room,Topic,Message,User
 from .form import RoomForm, UserForm
-from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 
 
@@ -18,11 +16,9 @@ def authPage(request):
     Authentication itself is handled by django-allauth at /accounts/...
     (the first sign-in automatically creates the account).
     """
+    if request.user.is_authenticated:
+        return redirect('home')
     return render(request, 'login_register.html')
-
-def logoutUser(request):
-    logout(request)
-    return redirect('home')
 
 def home(request):
     
