@@ -10,6 +10,21 @@
     <!-- ✅ Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- ✅ Social media preview (Open Graph / Twitter Cards) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="CollabStudy" />
+    <meta property="og:title" content="CollabStudy | Real-time Study Collaboration Platform" />
+    <meta property="og:description" content="Build meaningful connections, share knowledge, and grow together. Create study rooms, chat in real time, and join a global community of learners." />
+    <meta property="og:url" content="{{ request.scheme }}://{{ request.get_host }}/" />
+    <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'images/og-preview.png' %}" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="CollabStudy | Real-time Study Collaboration Platform" />
+    <meta name="twitter:description" content="Create study rooms, chat in real time, and grow together with a global community of learners." />
+    <meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'images/og-preview.png' %}" />
+    <meta name="theme-color" content="#0F172A" />
     
     <style>
         body { font-family: 'Inter', sans-serif; }
@@ -34,7 +49,9 @@
         }
     </style>
 
-    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon" />
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon" />
+    <link rel="icon" type="image/png" sizes="96x96" href="{% static 'images/logo-nav.png' %}" />
+    <link rel="apple-touch-icon" href="{% static 'images/apple-touch-icon.png' %}" />
     <title>CollabStudy | Billion Dollar Collaboration Platform</title>
 </head>
 

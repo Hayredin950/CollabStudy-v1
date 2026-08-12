@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="static/images/logo.svg" alt="CollabStudy Logo" width="120" height="120" style="border-radius: 20px;">
+  <img src="static/images/logo.png" alt="CollabStudy Logo" width="120" height="120" style="border-radius: 20px;">
   <h1 align="center">CollabStudy v1</h1>
   <p align="center">
     <strong>Real-time Study Collaboration Platform</strong>
@@ -8,7 +8,7 @@
   </p>
   
   <p align="center">
-    <a href="https://collabstudy750.onrender.com" target="_blank">
+    <a href="https://collabstudy-rwqj.onrender.com" target="_blank">
       <img src="https://img.shields.io/badge/Live_Demo-Access_Now-brightgreen?style=for-the-badge&logo=render" alt="Live Demo">
     </a>
     <a href="https://github.com/Hayredin950/CollabStudy-v1" target="_blank">
@@ -17,6 +17,10 @@
     <a href="LICENSE" target="_blank">
       <img src="https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge" alt="License">
     </a>
+  </p>
+
+  <p align="center">
+    <img src="static/images/og-preview.png" alt="CollabStudy Social Preview" width="600">
   </p>
 
   <div align="center">
