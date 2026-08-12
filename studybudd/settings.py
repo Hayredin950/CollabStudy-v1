@@ -12,6 +12,7 @@ import os
 from pathlib import Path
 
 import dj_database_url
+from django.core.exceptions import ImproperlyConfigured
 from dotenv import load_dotenv
 
 # Base directory
@@ -39,6 +40,15 @@ SECRET_KEY = os.environ.get(
     'SECRET_KEY',
     'django-insecure-8f1a4m2y-local-dev-only-key-do-not-use-in-production',
 )
+
+# Never run in production without a real secret key: fail fast instead of
+# silently serving traffic with a publicly-known key.
+if not DEBUG and os.environ.get('SECRET_KEY') is None:
+    raise ImproperlyConfigured(
+        'SECRET_KEY must be set in production. Generate one with '
+        '`python -c "from django.core.management.utils import '
+        'get_random_secret_key; print(get_random_secret_key())"`'
+    )
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env_bool('DEBUG', True)

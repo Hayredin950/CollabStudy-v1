@@ -80,6 +80,33 @@ CollabStudy v1 is a sophisticated collaboration platform engineered for students
 - **Static Files**: Whitenoise
 - **HTTPS**: Auto SSL via Let's Encrypt
 
+### One-click deploy (Render Blueprint)
+
+This repo ships a [`render.yaml`](render.yaml) blueprint that provisions the web
+service **and** a managed PostgreSQL database automatically:
+
+1. Push this repo to GitHub.
+2. Go to **Render Dashboard → New → Blueprint** and connect the repository.
+3. Render creates the `collabstudy` web service + `collabstudy-db` Postgres, runs
+   migrations/collectstatic, and sets `SECRET_KEY`, `DEBUG=false` and the
+   `DATABASE_URL` for you.
+
+Required environment variables (all set by the blueprint, but needed if you
+create the service manually):
+
+| Variable | Example | Purpose |
+|----------|---------|---------|
+| `SECRET_KEY` | `<random 50+ chars>` | Django signing/security key |
+| `DEBUG` | `false` | Must be `false` in production |
+| `ALLOWED_HOSTS` | `.onrender.com` | Allowed request hosts |
+| `CSRF_TRUSTED_ORIGINS` | `https://*.onrender.com` | HTTPS origins allowed for POST |
+| `DATABASE_URL` | `postgres://…` | Managed PostgreSQL connection |
+
+> ⚠️ **Note:** Render's *free* PostgreSQL instances expire after ~30 days.
+> Upgrade the database plan before that if you want the data to persist.
+> Uploaded avatars live on the instance disk and are wiped on redeploys — for
+> permanent storage, move uploads to Cloudinary/S3 (planned for v2).
+
 ## 🚀 Getting Started
 
 ### Prerequisites
