@@ -133,6 +133,10 @@ ACCOUNT_UNIQUE_EMAIL = True
 
 SOCIALACCOUNT_AUTO_SIGNUP = True
 SOCIALACCOUNT_EMAIL_VERIFICATION = 'none'
+# Merge accounts that use the same verified email across providers
+# (e.g. the same person signing in with GitHub AND Google).
+SOCIALACCOUNT_EMAIL_AUTHENTICATION = True
+SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
 SOCIALACCOUNT_ADAPTER = 'base.adapters.CollabStudySocialAccountAdapter'
 
 # Provider credentials come from environment variables (Render dashboard),
