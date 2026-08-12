@@ -54,7 +54,7 @@ CollabStudy v1 is a sophisticated collaboration platform engineered for students
 
 | Feature | Description |
 |---------|-------------|
-| **🔐 Secure Authentication** | User registration, login, and profile management with avatar support |
+| **🔐 Secure Authentication** | Google & GitHub OAuth sign-in (django-allauth) — no passwords |
 | **🏠 Study Rooms** | Create, join, and manage topic-specific study rooms |
 | **💬 Real-time Messaging** | Instant communication within study rooms |
 | **📊 Activity Feed** | Stay updated with platform-wide discussions and activities |
@@ -84,20 +84,18 @@ CollabStudy v1 is a sophisticated collaboration platform engineered for students
 - **Static Files**: Whitenoise
 - **HTTPS**: Auto SSL via Let's Encrypt
 
-### One-click deploy (Render Blueprint)
+### Deployment (Render + Neon)
 
-This repo ships a [`render.yaml`](render.yaml) blueprint that provisions the web
-service **and** a managed PostgreSQL database automatically:
+Live at **[https://collabstudy-rwqj.onrender.com](https://collabstudy-rwqj.onrender.com)**
 
-1. Push this repo to GitHub.
-2. Go to **Render Dashboard → New → Blueprint** and connect the repository.
-3. Render creates the `collabstudy` web service + `collabstudy-db` Postgres and
-   sets `SECRET_KEY`, `DEBUG=false` and the `DATABASE_URL` for you. Static files
-   are collected during the build; database migrations run automatically at
-   startup (free tier doesn't support pre-deploy commands).
+- **Hosting**: Render web service (free tier, auto-deploys from `main`)
+- **Database**: [Neon](https://neon.tech) serverless PostgreSQL — free and
+  **never expires** (unlike Render's 30-day free Postgres). `DATABASE_URL` is
+  set manually in the Render service's Environment tab.
+- **Static files**: collected during the build; migrations run at startup via
+  [`render.sh`](render.sh)
 
-Required environment variables (all set by the blueprint, but needed if you
-create the service manually):
+Required environment variables:
 
 | Variable | Example | Purpose |
 |----------|---------|---------|
@@ -105,11 +103,13 @@ create the service manually):
 | `DEBUG` | `false` | Must be `false` in production |
 | `ALLOWED_HOSTS` | `.onrender.com` | Allowed request hosts |
 | `CSRF_TRUSTED_ORIGINS` | `https://*.onrender.com` | HTTPS origins allowed for POST |
-| `DATABASE_URL` | `postgres://…` | Managed PostgreSQL connection |
+| `DATABASE_URL` | `postgres://…@…neon.tech/…` | Neon PostgreSQL connection |
+| `GOOGLE_CLIENT_ID` | `<from Google Cloud>` | Google OAuth client ID |
+| `GOOGLE_CLIENT_SECRET` | `<from Google Cloud>` | Google OAuth client secret |
+| `GITHUB_CLIENT_ID` | `<from GitHub>` | GitHub OAuth client ID |
+| `GITHUB_CLIENT_SECRET` | `<from GitHub>` | GitHub OAuth client secret |
 
-> ⚠️ **Note:** Render's *free* PostgreSQL instances expire after ~30 days.
-> Upgrade the database plan before that if you want the data to persist.
-> Uploaded avatars live on the instance disk and are wiped on redeploys — for
+> ⚠️ Uploaded avatars live on the instance disk and are wiped on redeploys — for
 > permanent storage, move uploads to Cloudinary/S3 (planned for v2).
 
 ## 🚀 Getting Started
@@ -173,7 +173,8 @@ create the service manually):
 ## 📱 Usage
 
 ### For Students
-1. **Sign Up**: Create your account with a custom avatar
+1. **Sign In**: Click **Continue with Google** or **Continue with GitHub** (your
+   first sign-in auto-creates your account — no passwords)
 2. **Explore Rooms**: Browse study rooms by topics or search
 3. **Join Discussions**: Participate in real-time conversations
 4. **Create Rooms**: Start your own study space for specific subjects
